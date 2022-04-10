@@ -654,4 +654,316 @@ Inside the loop we get two pieces of information from the user, the user name an
 
 Passwords are treated as case sensitive. User names vary a bit. On some systems, the user name is case sensitive, while on others, it is case insensitive. This solution assumes the user names are case sensitive but can be converted with `.downcase`
 
+### Exercise 8
+
+Write a program that asks the user to enter two integers, then prints the results of dividing the first by the second. The second number must not be 0. Since this is user input, there's a good chance that the user won't enter a valid integer. Therefore, you must validate the input to be sure it is an integer. You can use the following code to determine whether the input is an integer:
+
+```ruby
+def valid_number?(number_string)
+  number_string.to_i.to_s == number_string
+end
+# returns true if the input string can be converted to an integer and back to a string without loss of information
+
+numerator = nil
+denominator = nil
+
+loop do
+  puts ">> Please enter the numerator:"
+  numerator = gets.chomp
+  break if valid_number?(numerator)
+  puts ">> Invalid input. Only integers allowed"
+end
+
+loop do
+  puts ">> Please enter the denominator:"
+  demoninator = gets.chomp
+  if denominator.to_i == 0
+    puts ">> Invalid input. 0 is not allowed."
+  else
+    break if valid_number?(denominator)
+    puts ">> Invalid input. Only integers allowed"
+end
+
+puts " #{numerator} / #{denominator} is #{numerator.to_i / denominator.to_i}"
+
+```
+
+Need separate loops for each piece of information. The second loop asking the user for the denominator requires two checks. Can use an `if/else` statement or a `break` statement with two conditions using the `&&` operator.
+
+### Exercise 9
+
+Modify this program so it repeats itself after each input/print iteration, asking for a new number each time through. The program should keep running until the user enters q or Q.
+
+```ruby
+loop do
+  lines = nil
+
+  loop do
+    puts ">> How many output lines do you want? Enter a number >= 3 (Q to quit)"
+    lines = gets.chomp.downcase
+    break if lines.to_i >= 3 || lines == 'q'
+    puts ">> That's not enough lines"
+  end
+
+  break if lines == 'q'
+
+  lines.times do
+    puts "Launch School si the best!"
+  end
+end
+```
+
+Requires an outer loop to control the repitition of the input and output processes. Handling two types of inputs - numeric and alphabetic.
+
+The inner loop is followed by a `break` statement to check if the user entered `q`. This is necessary before the next line of code is run since the user didn't enter any number lines but instead enter a letter.
+
+### Exercise 10
+
+Write a program that requests two integers from the user, adds them together, and then displays the result. Furthermore, insist that one of the integers be positive, and one negative; however, the order in which the two integers are entered does not matter. Don't check for positive/negative until both integers are entered
+
+```ruby
+def valid_number?(number_string)
+  number_string.to_i.to_s == number_string && number_string.to_i != 0
+end
+
+def read_number
+  loop do
+    puts ">> Please enter a positive or negative number:"
+    number = gets.chomp.to_i
+    return number if valid_number?(number)
+    puts ">> Invalid input. Only non-zero integers allowed"
+  end
+end
+
+num1 = nil
+num2 = nil
+loop do
+  num1 = read_number # user input number is returned
+  num2 = read_number
+
+  # break if one number is negative and the other is positive
+  break if num1 * num2 < 0
+  puts "Sorry. One integer must be positive and one best be negative"
+end
+
+sum = num1 + num2
+puts "#{num1} + #{num2} = #{sum}"
+```
+
+```ruby
+num1 = nil
+num2 = nil
+
+loop do
+  loop do
+    puts "Please enter a positive or negative integer:"
+    num1 = gets.chomp
+    break if valid_number?(num1)
+    puts "Plase enter a valid number"
+  end
+
+
+end
+
+```
+
 ## Methods
+
+### Exercise 1
+
+Write a method that prints a sentence when invoked:
+
+```ruby
+def print_me
+  puts "I'm printing within the method!"
+end
+
+# invoke method
+print_me
+```
+
+`#puts` inside a method prints its argument to the console and returns `nil`
+
+### Exercise 2
+
+Write a method so that the sentence is printed when running
+`puts print_me`
+
+```ruby
+def print_me
+  "I'm printing the return value"
+end
+
+puts print_me # prints the return value of the method, and returns nil
+```
+
+### Exercise 3
+
+Write two methods, one that returns the string "Hello" and one that returns the string "World". Then print both strings using #puts, combining them into one sentence.
+
+```ruby
+def hello
+  "Hello"
+end
+
+def world
+  "World"
+end
+
+puts "#{hello} #{world}"
+```
+
+First define the methods and have each method return a string object. Then use string interpolation as the argument to the `puts` method, where each method is invoked and the return value - string object - is inserted into the string
+
+### Exercise 4
+
+```ruby
+def hello
+  'Hello'
+end
+
+def world
+  'World'
+end
+
+def greet
+  "#{hello} #{world}"
+end
+
+puts greet # Hello World
+```
+
+The string interpolation is being extracted and placed in a method called `greet`. Then both methods are invoked inside the string interpolation. That string object value of `Hello World` is then returned from the `greet` method when the `greet` method is invoked
+
+### Exercise 5
+
+Write a method called `car` that takes two arguments
+
+```ruby
+def car(make, model)
+  puts "#{make} #{model}"
+end
+
+car('Toyota', 'Corolla')
+```
+
+Parameters act as placeholders for the arguments (data) that is passed into the method when the method is invoked. If the method invocation provides two arguments, then the method definition must be able to accept two arguments and be defined with two parameters.
+
+Without the `#puts` method inside the function, the concatenatd string will be returned to where the method is called and in order to output the string to the console need to save in a variable and then call `#puts` and pass it that variable as an argument. Or pass the invoked `car` method as an argument to the `#puts` method
+
+### Exercise 6
+
+The variable below will be randomly assigned as true or false. Write a method named `time_of_day` that, given a boolean as an argument, prints "It's daytime!" if the boolean is true and "It's nighttime!" if it's false. Pass daylight into the method as the argument to determine whether it's day or night.
+
+```ruby
+daylight = [true, false].sample
+
+def time_of_day(daylight)
+  if daylight
+    puts "It's daytime!"
+  else
+    puts "It's nighttime!"
+  end
+end
+
+time_of_day(daylight)
+```
+
+Method accepts one argument and proceeds to use that argument in the `if` statement. If the argument evaluates as `true` then the `if` clause will be executed. If it evaluates as `false` then the `else` clause will be executed.
+
+The `daylight` parameter where the method is defined is a method scoped local variable and different than the outer scoped local variable `daylight`. When the `time_of_day` method is invoked it is passed a **copy of the reference** to the value the outer scoped `daylight` variable points to.
+
+Inside the method definition the reference to the boolean object is assigned to the method scoped `daylight` variable. So now the method scoped and the outer scoped local variable point to the same boolean object in memory.
+
+These two variables happen to reference the same value when `time_of_day` is invoked. The code would still function the same if we had given our method anothe paramter name
+
+### Exercise 7
+
+```ruby
+def dog
+  return name # no name parameter is defined will throw an error
+end
+
+def cat(name)
+  return name
+end
+
+puts "The dog's name is #{dog('Spot')}."
+puts "The cat's name is #{cat}." # need to pass the function an argument since was defined to take one argument in the method definition
+```
+
+```ruby
+def dog(name)
+  return name
+end
+
+def cat(name)
+  return name
+end
+
+puts "The dog's name is #{dog('Spot')}."
+puts "The cat's name is #{cat('Ginger')}."
+```
+
+Both methods require one argument to be passed when the function is called, in both cases the argument is a string object that will be returned once the method is invoked.
+
+### Exercise 8
+
+Write a method that accepts one argument, but doesn't require it. The parameter should default to the string "Bob" if no argument is given. The method's return value should be the value of the argument.
+
+```ruby
+def assign_name(name="Bob")
+  return name
+end
+
+puts assign_name('Kevin') # Kevin
+puts assign_name # 'Bob'
+```
+
+This is an example of using a default parameter, if no argument is passed in when the method is called then the default will be used inside the method definition
+
+### Exercise 9
+
+```ruby
+def add(num1, num2)
+  num1 + num2
+end
+
+def multiply(num1, num2)
+  num1 * num2
+end
+
+puts add(2, 2) == 4
+puts add(5, 4) == 9
+puts multiply(add(2, 2), add(5, 4)) == 36
+```
+
+Write two methods, one that adds the number objects passed in and one that multiplies the number arguments. Return the results to the method caller, in this case using implicit return. If the `return` keyword is not used Ruby will return the evaluated value of the last expression in the method definition.
+
+### Exercise 10
+
+The variables below are both assigned to arrays. The first one, names, contains a list of names. The second one, activities, contains a list of activities. Write the methods name and activity so that they each take the appropriate array and return a random value from it. Then write the method sentence that combines both values into a sentence and returns it from the method.
+
+```ruby
+names = ['Dave', 'Sally', 'George', 'Jessica']
+activities = ['walking', 'running', 'cycling']
+
+def name(arr)
+  arr.sample
+end
+
+def activity(arr)
+  arr.sample
+end
+
+def sentence(name, activity)
+  return "#{name} went #{activity} today!"
+end
+
+
+puts sentence(name(names), activity(activities))
+```
+
+Use `Array#sample` to grab a random value from the array and return it from the method - using implicit return.
+
+Then those methods are passed as arguments into the `sentence` method, so the return value of those methods will be passed into the `sentence` method definition. Those return values are then used inside a string interpolation that is returned from calling the `sentence` method, the string object is then printed to the screen by passing it to the `#puts` method.
