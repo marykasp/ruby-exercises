@@ -1,8 +1,8 @@
 def count_sheep
   5.times do |sheep|
-    puts sheep
+    puts sheep # puts returns nil
   end
-  10
+  10 # this is the last line of the method so this will be returned from calling the method
 end
 
 puts count_sheep

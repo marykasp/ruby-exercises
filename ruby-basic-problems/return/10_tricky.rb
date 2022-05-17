@@ -1,6 +1,6 @@
 def tricky_number
   if true
-    number = 1
+    number = 1 # return object being assigned - so this function returns number object with value of 1 since the else clause is never executed
   else
     2
   end
